@@ -16,6 +16,15 @@
   "idf.toolsPath": "/Users/leomotors/.espressif",
   "idf.flashType": "UART",
   "files.associations": {
-    "nvs_flash.h": "c"
+    "nvs_flash.h": "c",
+    "esp_camera.h": "c",
+    "param.h": "c",
+    "string.h": "c",
+    "camera.h": "c",
+    "freertos.h": "c",
+    "esp_compiler.h": "c",
+    "esp_system.h": "c",
+    "esp_check.h": "c",
+    "stdbool.h": "c"
   }
 }
