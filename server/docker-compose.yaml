@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  tokenizer:
+    container_name: embedded-project-server
+    restart: unless-stopped
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - FLASK_APP=app.py
+ 
