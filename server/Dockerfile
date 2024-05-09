@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8080
 
 # Run flask when the container launches
-CMD ["python", "app.py"]
+CMD ["python", "server.py"]
