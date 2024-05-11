@@ -10,5 +10,5 @@ services:
     environment:
       - ENV=development
       - PORT=8080
-      - API_KEY=i_love_embed_ajarns
+      - API_KEY=YWRtaW46YWRtaW4
  
