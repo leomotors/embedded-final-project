@@ -11,6 +11,9 @@ void send_picture(char *picture_binary, size_t size) {
   esp_http_client_config_t config = {
     // Does not support https
     .url = UPLOAD_ENDPOINT,
+    .auth_type = HTTP_AUTH_TYPE_BASIC,
+    .username = UPLOAD_AUTH_USERNAME,
+    .password = UPLOAD_AUTH_PASSWORD,
   };
   esp_http_client_handle_t client = esp_http_client_init(&config);
 
