@@ -12,6 +12,9 @@
 
 #include "camera.h"
 #include "wifi.h"
+#include "upload.h"
+
+const char *MAIN_TAG = "MAIN";
 
 void app_main(void) {
     printf("will init camera\n");
@@ -28,14 +31,22 @@ void app_main(void) {
     init_wifi();
     printf("init wifi finished\n");
 
-    while (0) {
-        ESP_LOGI(TAG, "Taking picture...");
+    while (1) {
+        ESP_LOGI(MAIN_TAG, "Taking picture...");
         camera_fb_t *pic = esp_camera_fb_get();
 
         // use pic->buf to access the image
-        ESP_LOGI(TAG, "Picture taken! Its size was: %zu bytes", pic->len);
-        esp_camera_fb_return(pic);
+        ESP_LOGI(MAIN_TAG, "Picture taken! Its size was: %zu bytes\nwidth: %zu height: %zu", pic->len, pic->width, pic->height);
+        if (wifi_ready) {
+          ESP_LOGI(MAIN_TAG, "Sending message");
+          send_picture((char*)pic->buf, pic->len);
+          // send_picture("hello", 5);
+        } else {
+          ESP_LOGI(MAIN_TAG, "Wifi is not ready for sending message");
+        }
 
-        vTaskDelay(5000 / portTICK_PERIOD_MS);
+        esp_camera_fb_return(pic);
+        vTaskDelay(10000 / portTICK_PERIOD_MS);
     }
 }
+

@@ -4,6 +4,8 @@
 #include "password.h"
 #include "wifi.h"
 
+uint8_t wifi_ready = 0;
+
 static void wifi_event_handler(void *event_handler_arg,
                                esp_event_base_t event_base, int32_t event_id,
                                void *event_data) {
@@ -19,6 +21,7 @@ static void wifi_event_handler(void *event_handler_arg,
         break;
     case IP_EVENT_STA_GOT_IP:
         printf("WiFi got IP ... \n\n");
+        wifi_ready = 1;
         break;
     default:
         break;
@@ -41,8 +44,8 @@ void init_wifi(void) {
 
     wifi_config_t wifi_configuration = {
         .sta = {.ssid = WIFI_SSID, .password = WIFI_PASSWORD}};
-    ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_configuration));
     esp_wifi_set_mode(WIFI_MODE_STA);
+    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_configuration));
 
     esp_wifi_start();
     esp_wifi_connect();

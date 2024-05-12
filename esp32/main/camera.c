@@ -27,7 +27,7 @@
 #define CAM_PIN_HREF 23
 #define CAM_PIN_PCLK 22
 
-const char *TAG = "camera";
+const char *CAMERA_TAG = "camera";
 
 static camera_config_t camera_config = {
     .pin_pwdn = CAM_PIN_PWDN,
@@ -53,7 +53,7 @@ static camera_config_t camera_config = {
     .ledc_timer = LEDC_TIMER_0,
     .ledc_channel = LEDC_CHANNEL_0,
 
-    .pixel_format = PIXFORMAT_RGB565, // YUV422,GRAYSCALE,RGB565,JPEG
+    .pixel_format = PIXFORMAT_JPEG, // YUV422,GRAYSCALE,RGB565,JPEG
     .frame_size =
         FRAMESIZE_QVGA, // QQVGA-UXGA, For ESP32, do not use sizes above QVGA
                         // when not JPEG. The performance of the ESP32-S series
@@ -71,7 +71,7 @@ esp_err_t init_camera(void) {
     // initialize the camera
     esp_err_t err = esp_camera_init(&camera_config);
     if (err != ESP_OK) {
-        ESP_LOGE(TAG, "Camera Init Failed");
+        ESP_LOGE(CAMERA_TAG, "Camera Init Failed");
         return err;
     }
 
