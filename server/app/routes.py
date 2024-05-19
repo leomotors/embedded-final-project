@@ -3,6 +3,8 @@ import io
 import cv2
 import numpy as np
 from app import app, limiter
+from discord import send_discord_message
+from env import DISCORD_BOT_TOKEN, DISCORD_CHANNEL_ID
 from flask import Response, request
 from lib import build_golden_frame, frames_info
 
@@ -87,6 +89,10 @@ def golden_frame():
         "Content-Type": "image/png",
     }
 
+    # Send discord request
+    send_discord_message(
+        DISCORD_BOT_TOKEN, DISCORD_CHANNEL_ID, response_stream.getvalue()
+    )
+
     # Return the response with the image stream
-    # send discord request
     return Response(response_stream.getvalue(), headers=headers)

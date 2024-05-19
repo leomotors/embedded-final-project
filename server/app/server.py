@@ -1,5 +1,3 @@
-import middlewares
-import routes
 from app import app, logging
 from env import PORT, is_dev
 from waitress import serve
