@@ -16,7 +16,7 @@ def send_discord_message(
             f'{{"content": "{message}"}}',
             "application/json",
         ),
-        "file": ("image.jpg", image_bytes, "image/jpeg"),
+        "file": ("image.png", image_bytes, "image/png"),
     }
 
     response = requests.post(url, headers=headers, files=multipart_data)
