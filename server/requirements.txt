@@ -1,0 +1,7 @@
+Flask==3.0.2
+Flask-Cors==4.0.0
+Flask-Limiter==3.6.0
+waitress==3.0.0
+python-dotenv==1.0.1
+golden-frame==2.1.74
+opencv-python==4.8.1.78
