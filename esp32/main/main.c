@@ -37,25 +37,27 @@ void app_main(void) {
     init_wifi();
     printf("init wifi finished\n");
 
+    while (!wifi_ready) {
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
+
+    ESP_LOGI(MAIN_TAG, "Wifi ready, start accepting gpio input");
+
     while (1) {
-        // while (1) {
-        //     if (gpio_get_level(GPIO_PIN) == 1) {
-        //         break;
-        //     }
-        //     ESP_LOGI(MAIN_TAG, "Meh");
-        //     vTaskDelay(5000 / portTICK_PERIOD_MS);
-        // }
+        while (1) {
+            if (gpio_get_level(GPIO_PIN) == 1) {
+                break;
+            }
+            ESP_LOGI(MAIN_TAG, "Meh");
+            vTaskDelay(5000 / portTICK_PERIOD_MS);
+        }
         ESP_LOGI(MAIN_TAG, "Taking picture...");
         camera_fb_t *pic = esp_camera_fb_get();
 
         // use pic->buf to access the image
         ESP_LOGI(MAIN_TAG, "Picture taken! Its size was: %zu bytes\nwidth: %zu height: %zu", pic->len, pic->width, pic->height);
-        if (wifi_ready) {
-            ESP_LOGI(MAIN_TAG, "Sending message");
-            send_picture((char*)pic->buf, pic->len);
-        } else {
-            ESP_LOGI(MAIN_TAG, "Wifi is not ready for sending message");
-        }
+        send_picture((char*)pic->buf, pic->len);
+        ESP_LOGI(MAIN_TAG, "Message sent");
 
         esp_camera_fb_return(pic);
         vTaskDelay(10000 / portTICK_PERIOD_MS);
