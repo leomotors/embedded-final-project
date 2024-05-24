@@ -10,14 +10,20 @@
 
 #include <esp_camera.h>
 
+#include <driver/gpio.h>
+
 #include "camera.h"
 #include "wifi.h"
 #include "upload.h"
+
+#define GPIO_PIN GPIO_NUM_12
 
 const char *MAIN_TAG = "MAIN";
 
 void app_main(void) {
     printf("will init camera\n");
+
+    gpio_set_direction(GPIO_PIN, GPIO_MODE_INPUT);
 
     size_t psram_size = esp_psram_get_size();
     printf("PSRAM size: %d bytes\n", psram_size);
@@ -32,17 +38,23 @@ void app_main(void) {
     printf("init wifi finished\n");
 
     while (1) {
+        // while (1) {
+        //     if (gpio_get_level(GPIO_PIN) == 1) {
+        //         break;
+        //     }
+        //     ESP_LOGI(MAIN_TAG, "Meh");
+        //     vTaskDelay(5000 / portTICK_PERIOD_MS);
+        // }
         ESP_LOGI(MAIN_TAG, "Taking picture...");
         camera_fb_t *pic = esp_camera_fb_get();
 
         // use pic->buf to access the image
         ESP_LOGI(MAIN_TAG, "Picture taken! Its size was: %zu bytes\nwidth: %zu height: %zu", pic->len, pic->width, pic->height);
         if (wifi_ready) {
-          ESP_LOGI(MAIN_TAG, "Sending message");
-          send_picture((char*)pic->buf, pic->len);
-          // send_picture("hello", 5);
+            ESP_LOGI(MAIN_TAG, "Sending message");
+            send_picture((char*)pic->buf, pic->len);
         } else {
-          ESP_LOGI(MAIN_TAG, "Wifi is not ready for sending message");
+            ESP_LOGI(MAIN_TAG, "Wifi is not ready for sending message");
         }
 
         esp_camera_fb_return(pic);
