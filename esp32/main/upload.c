@@ -17,7 +17,7 @@ void send_picture(char *picture_binary, size_t size) {
   };
   esp_http_client_handle_t client = esp_http_client_init(&config);
 
-  char *prefix = "--"BOUNDARY"\r\nContent-Disposition: form-data; name=\"uploads\"; filename=\"image_capture\"\r\nContent-Type: image/jpeg\r\n\r\n";
+  char *prefix = "--"BOUNDARY"\r\nContent-Disposition: form-data; name=\"frame_name\"\r\n\r\ngolden_frame.png\r\n--"BOUNDARY"\r\nContent-Disposition: form-data; name=\"file\"; filename=\"image_capture\"\r\nContent-Type: image/jpeg\r\n\r\n";
 
   char *suffix = "\r\n\r\n--"BOUNDARY"--";
 
